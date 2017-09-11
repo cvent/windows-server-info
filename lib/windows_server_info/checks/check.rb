@@ -15,7 +15,7 @@ module WindowsServerInfo
 
           server_auth[:endpoint] = "http://#{server_auth[:host]}:5985/wsman"
 
-          Timeout.timeout(10) do
+          Timeout.timeout(30) do
             WinRM::Connection.new(server_auth).shell(:powershell) { |shell| shell.run(command) }
           end
         rescue Timeout::Error
