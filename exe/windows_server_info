@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require 'windows_server_info'
+
+WindowsServerInfo::Cli.start
