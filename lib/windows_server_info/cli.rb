@@ -48,7 +48,7 @@ module WindowsServerInfo
 
         @@config_types.each do |type|
           puts " #{type.name.split('::').last} ".center(30, '=').blue
-          Checks.send("Diff #{type}".downcase.tr(' ', '_'), server_auth_1, server_auth_2).each do |e|
+          type.diff(server_auth_1, server_auth_2).each do |e|
             puts "#{e[0]} #{e[1]} (#{e[2]})"
           end
           puts
