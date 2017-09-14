@@ -4,6 +4,7 @@ PATH
     windows_server_info (0.1.0)
       colorize
       hashdiff
+      net-ping
       nori
       thor (~> 0.20.0)
       winrm
@@ -28,6 +29,7 @@ GEM
       little-plugger (~> 1.1)
       multi_json (~> 1.10)
     multi_json (1.12.2)
+    net-ping (2.0.1)
     nori (2.6.0)
     parser (2.4.0.0)
       ast (~> 2.2)

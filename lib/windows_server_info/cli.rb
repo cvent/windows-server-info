@@ -16,7 +16,8 @@ module WindowsServerInfo
         Checks::Services,
         Checks::Features,
         Checks::SharedDirectories,
-        Checks::Applications
+        Checks::Applications,
+        Checks::Processes
       ]
 
       def server_info(server, options = {})
@@ -27,7 +28,7 @@ module WindowsServerInfo
         }
 
         @@config_types.each do |type|
-          puts " #{type.name.split('::').last} ".center(30, '=').blue
+          puts " #{type} ".center(30, '=').blue
           p type.get(server_auth)
           puts
         end
@@ -47,7 +48,7 @@ module WindowsServerInfo
         }
 
         @@config_types.each do |type|
-          puts " #{type.name.split('::').last} ".center(30, '=').blue
+          puts " #{type} ".center(30, '=').blue
           type.diff(server_auth_1, server_auth_2).each do |e|
             puts "#{e[0]} #{e[1]} (#{e[2]})"
           end

@@ -1,7 +1,5 @@
 require 'windows_server_info/checks/check'
 
-require 'hashdiff'
-
 module WindowsServerInfo
   module Checks
     class Applications < Check

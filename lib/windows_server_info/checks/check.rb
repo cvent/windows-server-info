@@ -1,4 +1,6 @@
+require 'hashdiff'
 require 'ostruct'
+require 'net/ping'
 require 'timeout'
 require 'winrm'
 
@@ -6,9 +8,17 @@ module WindowsServerInfo
   module Checks
     class Check
       class << self
+        def localhost
+          if Net::Ping::External.new('docker.for.mac.localhost').ping?
+            'docker.for.mac.localhost'
+          else
+            '127.0.0.1'
+          end
+        end
+
         def run_powershell(command, server_auth)
           server_auth = {
-            host: '127.0.0.1',
+            host: localhost,
             user: 'vagrant',
             password: 'vagrant'
           } if server_auth[:host] == 'kitchen'
@@ -24,6 +34,10 @@ module WindowsServerInfo
 
         def diff(server_auth_1, server_auth_2)
           HashDiff.diff(get(server_auth_1), get(server_auth_2))
+        end
+
+        def to_s
+          name.split('::').last
         end
       end
     end
