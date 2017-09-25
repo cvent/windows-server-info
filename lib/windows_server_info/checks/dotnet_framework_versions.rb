@@ -5,18 +5,35 @@ module WindowsServerInfo
     class DotNetFrameworkVersions < Check
       class << self
         def get_dotnet_2_version(server_auth)
-          cmd = 'Get-ChildItem "HKLM:\SOFTWARE\Microsoft\NET Framework Setup\NDP" -Recurse | Get-ItemProperty -name Version,Release -EA 0 | Where { $_.PSChildName -match "^v2." } | Select -Expand Version'
+          cmd = 'Get-ChildItem "HKLM:\SOFTWARE\Microsoft\NET Framework Setup\NDP" -Recurse `
+                  | Get-ItemProperty -name Version,Release -EA 0 `
+                  | Where { $_.Version -match "^2." } `
+                  | Select -Expand Version'
           run_powershell(cmd, server_auth).stdout.split(/\r\n/)
         end
 
         def get_dotnet_3_version(server_auth)
-          cmd = 'Get-ChildItem "HKLM:\SOFTWARE\Microsoft\NET Framework Setup\NDP" -Recurse | Get-ItemProperty -name Version,Release -EA 0 | Where { $_.PSChildName -match "^v3." } | Select -Expand Version'
+          cmd = 'Get-ChildItem "HKLM:\SOFTWARE\Microsoft\NET Framework Setup\NDP" -Recurse `
+                  | Get-ItemProperty -name Version,Release -EA 0 `
+                  | Where { $_.Version -match "^3." } `
+                  | Select -Expand Version'
           run_powershell(cmd, server_auth).stdout.split(/\r\n/)
         end
 
-        def get_dotnet_4_version(server_auth)
-          cmd = 'Get-ChildItem "HKLM:\SOFTWARE\Microsoft\NET Framework Setup\NDP" -Recurse | Get-ItemProperty -name Version,Release -EA 0 | Where { $_.Version -match "^4." -and $_.Release } | Select -Expand Release'
-          v4_versions = run_powershell(cmd, server_auth).stdout.split(/\r\n/).uniq
+        def get_dotnet_40_version(server_auth)
+          cmd = 'Get-ChildItem "HKLM:\SOFTWARE\Microsoft\NET Framework Setup\NDP" -Recurse `
+                  | Get-ItemProperty -name Version,Release -EA 0 `
+                  | Where { $_.Version -match "^4.0" } `
+                  | Select -Expand Version'
+          run_powershell(cmd, server_auth).stdout.split(/\r\n/)
+        end
+
+        def get_dotnet_45_version(server_auth)
+          cmd = 'Get-ChildItem "HKLM:\SOFTWARE\Microsoft\NET Framework Setup\NDP" -Recurse `
+                  | Get-ItemProperty -name Version,Release -EA 0 `
+                  | Where { $_.Version -match "^4." -and $_.Release } `
+                  | Select -Expand Release'
+          v4_versions = run_powershell(cmd, server_auth).stdout.split(/\r\n/)
 
           v4_versions.map { |release| release.to_i }.map do |release|
             case release
@@ -33,7 +50,11 @@ module WindowsServerInfo
         end
 
         def get(server_auth)
-          get_dotnet_2_version(server_auth) + get_dotnet_3_version(server_auth) + get_dotnet_4_version(server_auth)
+          get_dotnet_2_version(server_auth)
+          .concat(get_dotnet_3_version(server_auth))
+          .concat(get_dotnet_40_version(server_auth))
+          .concat(get_dotnet_45_version(server_auth))
+          .uniq
         end
 
         def to_s
