@@ -1,4 +1,5 @@
 require 'windows_server_info/checks/applications'
+require 'windows_server_info/checks/dotnet_framework_versions'
 require 'windows_server_info/checks/features'
 require 'windows_server_info/checks/iis_configuration'
 require 'windows_server_info/checks/network_mounts'

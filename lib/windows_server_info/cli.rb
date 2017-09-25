@@ -17,7 +17,8 @@ module WindowsServerInfo
         Checks::Features,
         Checks::SharedDirectories,
         Checks::Applications,
-        Checks::Processes
+        Checks::Processes,
+        Checks::DotNetFrameworkVersions
       ]
 
       def server_info(server, options = {})
