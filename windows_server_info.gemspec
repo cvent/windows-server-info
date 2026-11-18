@@ -25,6 +25,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'hashdiff'
   spec.add_dependency 'nori'
   spec.add_dependency 'net-ping'
-  spec.add_dependency 'thor', '~> 0.20.0'
+  spec.add_dependency 'thor', '~> 1.5.0'
   spec.add_dependency 'winrm'
 end
